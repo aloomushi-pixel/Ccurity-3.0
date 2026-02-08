@@ -233,6 +233,7 @@ export async function duplicateConcept(id: string): Promise<Concept> {
     const original = await getConceptById(id);
     if (!original) throw new Error("Concept not found");
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id: _id, createdAt: _ca, updatedAt: _ua, quotation_count: _qc, ...rest } = original;
     return createConcept({
         ...rest,

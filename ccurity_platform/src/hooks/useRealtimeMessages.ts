@@ -20,6 +20,7 @@ export function useRealtimeMessages(
 
     // Reset when conversation changes
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setMessages(initialMessages);
     }, [conversationId]); // eslint-disable-line react-hooks/exhaustive-deps
 

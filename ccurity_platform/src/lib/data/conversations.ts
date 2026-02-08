@@ -45,20 +45,25 @@ export async function getConversations(): Promise<ConversationSummary[]> {
 
     if (error) throw error;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return ((convos ?? []) as unknown[]).map((c: any) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const participants = (c.participants ?? []).map((p: any) => ({
             id: p.user?.id ?? "",
             name: p.user?.name ?? "—",
             role: p.user?.role ?? "CLIENT",
         }));
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const msgs = (c.messages ?? []) as any[];
         msgs.sort(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (a: any, b: any) =>
                 new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
 
         const last = msgs[0] ?? null;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const unreadCount = msgs.filter((m: any) => !m.isRead).length;
 
         return {
@@ -102,6 +107,7 @@ export async function getConversationParticipants(conversationId: string) {
         .select("user:users!conversation_participants_userId_fkey(id, name, role)")
         .eq("conversationId", conversationId);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return ((data ?? []) as any[]).map((p) => ({
         id: p.user?.id ?? "",
         name: p.user?.name ?? "—",

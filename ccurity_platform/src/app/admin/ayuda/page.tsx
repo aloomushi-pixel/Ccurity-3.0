@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { UserNav } from "@/components/user-nav";
+import type { Metadata } from "next";
+
 
 const modules = [
     {
@@ -114,6 +116,12 @@ const roles = [
         features: ["Seguimiento de servicios", "Facturas y pagos", "Contratos", "Soporte y disputas"],
     },
 ];
+
+
+export const metadata: Metadata = {
+  title: "Ayuda — Ccurity Admin",
+  description: "Centro de ayuda y documentación de la plataforma.",
+};
 
 export default function AyudaPage() {
     return (

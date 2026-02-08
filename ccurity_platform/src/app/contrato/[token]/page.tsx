@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { getContractByToken } from "@/lib/data/contract-signing";
 import { logViewAction } from "./actions";
 import SigningWizard from "./signing-wizard";
@@ -18,7 +19,7 @@ export default async function ContractSigningPage({
     // Log the view action
     await logViewAction(token);
 
-    const { contract, token: tokenRecord, signature, allTokens } = data;
+    const { contract, token: tokenRecord, allTokens } = data;
     const alreadySigned = !!tokenRecord.signedAt;
     const bothSigned = allTokens.every((t) => t.signedAt != null);
 
@@ -31,10 +32,13 @@ export default async function ContractSigningPage({
             <header className="border-b border-white/10 px-6 py-4">
                 <div className="max-w-3xl mx-auto flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <img
+                        <Image
                             src="https://ccurity.com.mx/wp-content/uploads/2023/07/CCURITY-PROVEEDOR-DE-SISTEMAS-DE-SEGURIDAD-1.svg"
                             alt="CCurity"
                             className="h-8"
+                            width={120}
+                            height={32}
+                            unoptimized
                         />
                     </div>
                     <div className="text-right">
@@ -91,6 +95,7 @@ export default async function ContractSigningPage({
                     <div className="mt-4 pt-4 border-t border-white/10">
                         <p className="text-xs text-gray-500 mb-2">Estado de firmas</p>
                         <div className="flex gap-4">
+                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                             {allTokens.map((t: any) => (
                                 <div key={t.id} className="flex items-center gap-2">
                                     <span className={`w-2 h-2 rounded-full ${t.signedAt ? "bg-green-400" : "bg-yellow-400 animate-pulse"}`} />

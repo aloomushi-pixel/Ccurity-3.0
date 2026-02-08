@@ -1,5 +1,13 @@
 import Link from "next/link";
 import { login } from "@/app/auth/actions";
+import type { Metadata } from "next";
+
+
+
+export const metadata: Metadata = {
+    title: "Iniciar Sesión — Ccurity",
+    description: "Inicia sesión en tu cuenta de Ccurity para gestionar tu plataforma de seguridad electrónica.",
+};
 
 export default async function LoginPage({
     searchParams,
@@ -55,6 +63,7 @@ export default async function LoginPage({
                                 id="email"
                                 name="email"
                                 type="email"
+                                autoComplete="email"
                                 required
                                 placeholder="tu@empresa.com"
                                 className="w-full px-4 py-2.5 rounded-lg bg-surface-2 border border-border text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
@@ -72,6 +81,7 @@ export default async function LoginPage({
                                 id="password"
                                 name="password"
                                 type="password"
+                                autoComplete="current-password"
                                 required
                                 placeholder="••••••••"
                                 className="w-full px-4 py-2.5 rounded-lg bg-surface-2 border border-border text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
@@ -86,7 +96,16 @@ export default async function LoginPage({
                         </button>
                     </form>
 
-                    <div className="mt-6 text-center text-sm text-muted">
+                    <div className="mt-4 text-center">
+                        <Link
+                            href="/auth/forgot-password"
+                            className="text-xs text-muted hover:text-primary transition-colors"
+                        >
+                            ¿Olvidaste tu contraseña?
+                        </Link>
+                    </div>
+
+                    <div className="mt-4 text-center text-sm text-muted">
                         ¿No tienes cuenta?{" "}
                         <Link
                             href="/signup"

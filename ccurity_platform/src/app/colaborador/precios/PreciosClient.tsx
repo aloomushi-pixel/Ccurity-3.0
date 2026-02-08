@@ -83,7 +83,7 @@ export function PreciosClient({ prices: initialPrices, concepts }: Props) {
         return result;
     }
 
-    async function handleDelete(priceId: string, conceptId: string) {
+    async function handleDelete(priceId: string) {
         setSaving(true);
         const result = await deletePriceAction(priceId);
         if (result.success) {
@@ -374,8 +374,7 @@ export function PreciosClient({ prices: initialPrices, concepts }: Props) {
                                                     <button
                                                         onClick={() =>
                                                             handleDelete(
-                                                                p.id,
-                                                                p.conceptId
+                                                                p.id
                                                             )
                                                         }
                                                         disabled={saving}

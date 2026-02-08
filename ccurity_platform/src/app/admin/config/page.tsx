@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { UserNav } from "@/components/user-nav";
 import { createClient } from "@/lib/supabase/server";
+import type { Metadata } from "next";
+
 
 async function getConfigData() {
     const supabase = await createClient();
@@ -30,6 +32,12 @@ async function getConfigData() {
         serviceStates: serviceStates ?? [],
     };
 }
+
+
+export const metadata: Metadata = {
+  title: "Configuración — Ccurity Admin",
+  description: "Configuración general del sistema y parámetros de la plataforma.",
+};
 
 export default async function AdminConfigPage() {
     const data = await getConfigData();
@@ -106,6 +114,7 @@ export default async function AdminConfigPage() {
                             {data.serviceTypes.length === 0 && (
                                 <div className="px-5 py-6 text-center text-muted text-sm">Sin tipos configurados</div>
                             )}
+                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                             {data.serviceTypes.map((t: any) => (
                                 <div key={t.id} className="px-5 py-2.5 flex items-center gap-3">
                                     <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: t.color }} />
@@ -124,6 +133,7 @@ export default async function AdminConfigPage() {
                             {data.serviceStates.length === 0 && (
                                 <div className="px-5 py-6 text-center text-muted text-sm">Sin estados configurados</div>
                             )}
+                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                             {data.serviceStates.map((s: any) => (
                                 <div key={s.id} className="px-5 py-2.5 flex items-center gap-3">
                                     <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: s.color }} />

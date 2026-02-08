@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { UserNav } from "@/components/user-nav";
 import { createClient } from "@/lib/supabase/server";
+import type { Metadata } from "next";
+
 
 async function getNotificationsData() {
     const supabase = await createClient();
@@ -53,6 +55,12 @@ async function getNotificationsData() {
     };
 }
 
+
+export const metadata: Metadata = {
+  title: "Notificaciones — Ccurity Admin",
+  description: "Centro de notificaciones del sistema.",
+};
+
 export default async function NotificacionesPage() {
     const data = await getNotificationsData();
 
@@ -102,6 +110,7 @@ export default async function NotificacionesPage() {
                             <h2 className="font-semibold text-sm text-red-400">🚨 Facturas Vencidas</h2>
                         </div>
                         <div className="divide-y divide-border/50">
+                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                             {data.overdueInvoices.map((inv: any) => (
                                 <div key={inv.id} className="px-5 py-3 flex items-center justify-between">
                                     <div>
@@ -125,6 +134,7 @@ export default async function NotificacionesPage() {
                             <h2 className="font-semibold text-sm text-orange-400">⚠️ Contratos por Vencer (30 días)</h2>
                         </div>
                         <div className="divide-y divide-border/50">
+                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                             {data.expiringContracts.map((c: any) => (
                                 <Link key={c.id} href={`/admin/finanzas/${c.id}`} className="block px-5 py-3 hover:bg-surface-2/50 transition-colors">
                                     <div className="flex items-center justify-between">
@@ -152,6 +162,7 @@ export default async function NotificacionesPage() {
                         {data.upcomingServices.length === 0 && (
                             <div className="px-5 py-6 text-center text-muted text-sm">Sin servicios programados esta semana</div>
                         )}
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         {data.upcomingServices.map((s: any) => (
                             <div key={s.id} className="px-5 py-3 flex items-center justify-between">
                                 <div className="min-w-0 flex-1">
@@ -182,6 +193,7 @@ export default async function NotificacionesPage() {
                         {data.pendingPayments.length === 0 && (
                             <div className="px-5 py-6 text-center text-muted text-sm">Sin pagos pendientes</div>
                         )}
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         {data.pendingPayments.map((p: any) => (
                             <div key={p.id} className="px-5 py-3 flex items-center justify-between">
                                 <div>

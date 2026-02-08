@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { UserNav } from "@/components/user-nav";
 import { createClient } from "@/lib/supabase/server";
-import { FloatingChat } from "@/components/chat/FloatingChat";
+import type { Metadata } from "next";
+
 
 async function getSupervisorData() {
     const supabase = await createClient();
@@ -37,7 +37,9 @@ async function getSupervisorData() {
         .from("contracts")
         .select("id, status, amount");
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const activeContracts = (contracts ?? []).filter((c: any) => c.status === "active").length;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const totalContractValue = (contracts ?? []).reduce((s: number, c: any) => s + Number(c.amount), 0);
 
     // Disputes (placeholder — future table)
@@ -54,6 +56,12 @@ async function getSupervisorData() {
         disputes,
     };
 }
+
+
+export const metadata: Metadata = {
+  title: "Dashboard — Ccurity Supervisor",
+  description: "Panel de supervisión. Auditoría de servicios y monitoreo de operaciones.",
+};
 
 export default async function SupervisorDashboard() {
     const data = await getSupervisorData();
@@ -133,6 +141,7 @@ export default async function SupervisorDashboard() {
                             {data.services.length === 0 && (
                                 <tr><td colSpan={6} className="px-4 py-8 text-center text-muted">Sin servicios registrados</td></tr>
                             )}
+                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                             {data.services.map((s: any) => (
                                 <tr key={s.id} className="border-b border-border/50 hover:bg-surface-2/50 transition-colors">
                                     <td className="px-4 py-2.5 font-medium max-w-[200px] truncate">
@@ -141,7 +150,7 @@ export default async function SupervisorDashboard() {
                                     <td className="px-4 py-2.5 text-muted">{s.client?.name ?? "—"}</td>
                                     <td className="px-4 py-2.5 text-muted text-xs">
                                         {s.collaborators?.length > 0
-                                            ? s.collaborators.map((c: any) => c.profile?.full_name).filter(Boolean).join(", ") || "—"
+                                            ? s.collaborators.map((c: any) => c.profile?.full_name).filter(Boolean).join(", ") || "—" // eslint-disable-line @typescript-eslint/no-explicit-any
                                             : "—"}
                                     </td>
                                     <td className="px-4 py-2.5">

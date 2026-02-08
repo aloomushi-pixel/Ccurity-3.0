@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { UserNav } from "@/components/user-nav";
 import { createClient } from "@/lib/supabase/server";
+import type { Metadata } from "next";
+
 
 async function getUsersData() {
     const supabase = await createClient();
@@ -12,8 +14,10 @@ async function getUsersData() {
 
     const all = profiles ?? [];
     const byRole: Record<string, number> = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     all.forEach((p: any) => {
-        byRole[p.role] = (byRole[p.role] || 0) + 1;
+        const role = (p.role || "unknown").toLowerCase();
+        byRole[role] = (byRole[role] || 0) + 1;
     });
 
     return { profiles: all, byRole };
@@ -31,6 +35,12 @@ const roleLabels: Record<string, string> = {
     supervisor: "Supervisor",
     colaborador: "Colaborador",
     cliente: "Cliente",
+};
+
+
+export const metadata: Metadata = {
+  title: "Usuarios — Ccurity Admin",
+  description: "Gestión de usuarios, roles y permisos del sistema.",
 };
 
 export default async function AdminUsuariosPage() {
@@ -86,6 +96,7 @@ export default async function AdminUsuariosPage() {
                                 {data.profiles.length === 0 && (
                                     <tr><td colSpan={4} className="px-4 py-8 text-center text-muted">Sin usuarios registrados</td></tr>
                                 )}
+                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                 {data.profiles.map((p: any) => (
                                     <tr key={p.id} className="border-b border-border/50 hover:bg-surface-2/50 transition-colors">
                                         <td className="px-4 py-2.5">

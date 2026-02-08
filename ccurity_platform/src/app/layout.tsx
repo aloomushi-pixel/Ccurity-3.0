@@ -26,8 +26,8 @@ export const metadata: Metadata = {
     title: "Ccurity",
   },
   icons: {
-    icon: "/icon-192.png",
-    apple: "/icon-192.png",
+    icon: "/icon-192.svg",
+    apple: "/icon-192.svg",
   },
   openGraph: {
     title: "Ccurity Platform",
@@ -39,8 +39,6 @@ export const metadata: Metadata = {
 
 import { ThemeProvider } from "@/components/providers/theme-provider";
 
-// ... imports
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -48,7 +46,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className={`${inter.variable} antialiased`}>
+      <body className={`${inter.variable} antialiased`} suppressHydrationWarning>
         <ThemeProvider
           attribute="data-theme"
           defaultTheme="system"

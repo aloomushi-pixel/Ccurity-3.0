@@ -2,6 +2,14 @@ import { getConversations, getChatStats, getConversationMessages } from "@/lib/d
 import { ChatLayout } from "./chat-layout";
 import { createConversationAction } from "./actions";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+
+
+export const metadata: Metadata = {
+    title: "Chat — Ccurity Admin",
+    description: "Comunicación interna del equipo y soporte al cliente.",
+};
 
 export default async function ChatPage() {
     const [conversations, stats] = await Promise.all([
@@ -49,7 +57,7 @@ export default async function ChatPage() {
 
                     {/* New conversation form */}
                     <details className="relative">
-                        <summary className="px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-accent text-white text-sm font-medium cursor-pointer hover:opacity-90 transition-opacity list-none">
+                        <summary className="px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-accent text-white text-sm font-medium cursor-pointer hover:opacity-90 transition-opacity list-none whitespace-nowrap">
                             + Nueva conversación
                         </summary>
                         <div className="absolute right-0 top-full mt-2 z-50 w-80 p-4 rounded-xl glass-card shadow-xl border border-border">

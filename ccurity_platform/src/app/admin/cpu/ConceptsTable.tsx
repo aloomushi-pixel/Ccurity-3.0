@@ -436,6 +436,7 @@ export default function ConceptsTable({
                                             <td className="py-3 px-3">
                                                 <div className="flex items-center gap-2">
                                                     {c.imageUrl && (
+                                                        // eslint-disable-next-line @next/next/no-img-element
                                                         <img
                                                             src={c.imageUrl}
                                                             alt=""

@@ -13,6 +13,13 @@ import {
     updateServiceStateAction,
     deleteServiceAction,
 } from "./actions";
+import type { Metadata } from "next";
+
+
+export const metadata: Metadata = {
+    title: "Servicios — Ccurity Admin",
+    description: "Gestión de servicios de seguridad electrónica, instalaciones y mantenimientos.",
+};
 
 export default async function ServiciosPage() {
     const [services, stats, types, states, clients, collaborators] =

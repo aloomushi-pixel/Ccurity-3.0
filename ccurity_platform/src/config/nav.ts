@@ -9,9 +9,6 @@ import {
     CreditCard,
     BarChart3,
     Calendar,
-    ShieldCheck,
-    UserCircle,
-    Bell,
     HelpCircle,
     FileCheck,
 } from "lucide-react";

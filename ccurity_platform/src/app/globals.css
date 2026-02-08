@@ -64,11 +64,20 @@ body {
 }
 
 /* Utility: Glass Card */
+/* Utility: Glass Card */
 .glass-card {
-  background: color-mix(in srgb, var(--surface-1) 80%, transparent);
-  backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+  background: color-mix(in srgb, var(--surface-1) 70%, transparent);
+  backdrop-filter: blur(12px) saturate(190%);
+  border: 1px solid color-mix(in srgb, var(--border) 30%, transparent);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
+}
+
+.glass-card:hover {
+  background: color-mix(in srgb, var(--surface-1) 80%, transparent);
+  border-color: color-mix(in srgb, var(--ccurity-primary) 30%, transparent);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
 }
 
 /* Utility: Gradient text */

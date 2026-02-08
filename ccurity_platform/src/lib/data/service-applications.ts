@@ -43,6 +43,7 @@ export async function getApplicationsByService(
 
     if (error) throw error;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (data ?? []).map((row: any) => ({
         id: row.id,
         serviceId: row.serviceId,
@@ -80,6 +81,7 @@ export async function getApplicationsByCollaborator(
 
     if (error) throw error;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (data ?? []).map((row: any) => ({
         id: row.id,
         serviceId: row.serviceId,

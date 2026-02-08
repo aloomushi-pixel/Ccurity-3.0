@@ -81,8 +81,10 @@ export default async function ContractDetailPage({
                     {/* Client */}
                     <div className="glass-card p-5">
                         <p className="text-xs text-muted mb-2">Cliente</p>
+                        {/* eslint-disable @typescript-eslint/no-explicit-any */}
                         <p className="font-medium">{(contract as any).client?.name ?? "—"}</p>
                         <p className="text-sm text-muted">{(contract as any).client?.email ?? ""}</p>
+                        {/* eslint-enable @typescript-eslint/no-explicit-any */}
                     </div>
 
                     {/* Financial */}

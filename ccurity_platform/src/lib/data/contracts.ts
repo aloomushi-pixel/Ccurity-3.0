@@ -85,9 +85,11 @@ export async function getContractById(id: string): Promise<ContractFull | null> 
     const { data: invoices } = await supabase
         .from("invoices")
         .select("*")
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .eq("userId", (contract as any).userId)
         .order("createdAt", { ascending: false });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const invoiceIds = (invoices ?? []).map((inv: any) => inv.id);
 
     let payments: Payment[] = [];

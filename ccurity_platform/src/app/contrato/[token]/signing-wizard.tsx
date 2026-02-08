@@ -43,8 +43,8 @@ export default function SigningWizard({ token, signerName }: { token: string; si
             fd.set("acceptedContent", String(acceptedContent));
             await submitSignatureAction(fd);
             setStep("done");
-        } catch (err: any) {
-            setError(err.message || "Error al firmar");
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : "Error al firmar");
         } finally {
             setSubmitting(false);
         }
@@ -250,6 +250,7 @@ function CameraStep({
     }, [stopCamera]);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         startCamera();
         return () => stopCamera();
     }, [startCamera, stopCamera]);
@@ -261,6 +262,7 @@ function CameraStep({
 
             {preview ? (
                 <div className="space-y-3">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={preview} alt="Captura" className="w-full rounded-lg border border-white/10" />
                     <div className="flex gap-2">
                         <button
@@ -441,24 +443,28 @@ function ConfirmStep({
                 {selfie && (
                     <div className="space-y-1">
                         <p className="text-[10px] text-gray-500">Selfie</p>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={selfie} alt="Selfie" className="w-full rounded-lg border border-white/10" />
                     </div>
                 )}
                 {ineFront && (
                     <div className="space-y-1">
                         <p className="text-[10px] text-gray-500">INE Frente</p>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={ineFront} alt="INE Frente" className="w-full rounded-lg border border-white/10" />
                     </div>
                 )}
                 {ineBack && (
                     <div className="space-y-1">
                         <p className="text-[10px] text-gray-500">INE Reverso</p>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={ineBack} alt="INE Reverso" className="w-full rounded-lg border border-white/10" />
                     </div>
                 )}
                 {signature && (
                     <div className="space-y-1">
                         <p className="text-[10px] text-gray-500">Firma autógrafa</p>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={signature} alt="Firma" className="w-full rounded-lg border border-white/10 bg-black/30" />
                     </div>
                 )}

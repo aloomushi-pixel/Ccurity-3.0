@@ -3,11 +3,14 @@ import { getConversations, getConversationMessages, getConversationParticipants 
 import { FloatingChatProvider } from "./FloatingChatProvider";
 import type { RealtimeMessage } from "@/hooks/useRealtimeMessages";
 
-/**
- * Server component wrapper that fetches chat data and renders the FloatingChatProvider.
- * Drop this into any page layout to add the floating chat.
- */
-export async function FloatingChat() {
+interface ChatData {
+    conversations: Awaited<ReturnType<typeof getConversations>>;
+    currentUserId: string;
+    initialMessages: Record<string, RealtimeMessage[]>;
+    participantNames: Record<string, Record<string, string>>;
+}
+
+async function fetchChatData(): Promise<ChatData | null> {
     try {
         const supabase = await createClient();
         const {
@@ -45,16 +48,27 @@ export async function FloatingChat() {
             })
         );
 
-        return (
-            <FloatingChatProvider
-                conversations={conversations}
-                currentUserId={user.id}
-                initialMessages={initialMessages}
-                participantNames={participantNames}
-            />
-        );
+        return { conversations, currentUserId: user.id, initialMessages, participantNames };
     } catch (err) {
         console.error("[FloatingChat] Error loading chat data:", err);
         return null;
     }
+}
+
+/**
+ * Server component wrapper that fetches chat data and renders the FloatingChatProvider.
+ * Drop this into any page layout to add the floating chat.
+ */
+export async function FloatingChat() {
+    const data = await fetchChatData();
+    if (!data) return null;
+
+    return (
+        <FloatingChatProvider
+            conversations={data.conversations}
+            currentUserId={data.currentUserId}
+            initialMessages={data.initialMessages}
+            participantNames={data.participantNames}
+        />
+    );
 }

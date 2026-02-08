@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import type { Metadata } from "next";
+
 
 async function getColaboradorData() {
     const supabase = await createClient();
@@ -41,6 +43,12 @@ const stateColors: Record<string, string> = {
     active: "bg-green-500-20 text-green-400",
     completed: "bg-blue-500/20 text-blue-400",
     cancelled: "bg-red-500/20 text-red-400",
+};
+
+
+export const metadata: Metadata = {
+  title: "Dashboard — Ccurity Colaborador",
+  description: "App operativa para técnicos en campo. Gestión de servicios asignados.",
 };
 
 export default async function ColaboradorDashboard() {
@@ -95,6 +103,7 @@ export default async function ColaboradorDashboard() {
                             {data.services.length === 0 && (
                                 <tr><td colSpan={4} className="px-4 py-8 text-center text-muted">Sin servicios asignados</td></tr>
                             )}
+                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                             {data.services.map((s: any) => (
                                 <tr key={s.id} className="border-b border-border/50 hover:bg-surface-2/50 transition-colors">
                                     <td className="px-4 py-2.5 font-medium">{s.description || `Servicio #${s.id.slice(0, 8)}`}</td>
@@ -131,6 +140,7 @@ export default async function ColaboradorDashboard() {
                         {data.contracts.length === 0 && (
                             <div className="px-5 py-6 text-center text-muted text-sm">Sin contratos</div>
                         )}
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         {data.contracts.map((c: any) => (
                             <div key={c.id} className="px-5 py-3 flex items-center justify-between">
                                 <div>
@@ -157,6 +167,7 @@ export default async function ColaboradorDashboard() {
                         {data.pendingPayments.length === 0 && (
                             <div className="px-5 py-6 text-center text-muted text-sm">Sin pagos pendientes</div>
                         )}
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         {data.pendingPayments.map((p: any) => (
                             <div key={p.id} className="px-5 py-3 flex items-center justify-between">
                                 <div>

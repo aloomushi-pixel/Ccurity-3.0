@@ -74,8 +74,7 @@ export async function generateStripePaymentLink(
     const linkRes = await stripeCreatePaymentLink(
         priceRes.id,
         1,
-        redirectUrl,
-        isRecurring ? "subscription" : "payment"
+        redirectUrl
     );
 
     // 4. Store Stripe IDs in the quotation row
@@ -197,8 +196,7 @@ async function stripeCreatePrice(
 async function stripeCreatePaymentLink(
     priceId: string,
     quantity: number,
-    redirectUrl?: string,
-    mode?: "payment" | "subscription"
+    redirectUrl?: string
 ): Promise<{ id: string; url: string }> {
     const body: Record<string, string> = {
         "line_items[0][price]": priceId,

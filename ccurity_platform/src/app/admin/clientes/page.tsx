@@ -2,7 +2,9 @@ import Link from "next/link";
 import { UserNav } from "@/components/user-nav";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import type { Metadata } from "next";
+
+
 
 async function getClientsData() {
     const supabase = await createClient();
@@ -60,6 +62,12 @@ async function deleteClientAction(formData: FormData) {
     revalidatePath("/admin/clientes");
 }
 
+
+export const metadata: Metadata = {
+  title: "Clientes — Ccurity Admin",
+  description: "Gestión de clientes y relaciones comerciales.",
+};
+
 export default async function AdminClientesPage() {
     const data = await getClientsData();
 
@@ -94,6 +102,7 @@ export default async function AdminClientesPage() {
                         <p className="text-xs text-muted">Servicios</p>
                     </div>
                     <div className="glass-card p-4 text-center">
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         <p className="text-2xl font-bold">{data.clients.filter((c: any) => c.company).length}</p>
                         <p className="text-xs text-muted">Empresas</p>
                     </div>
@@ -159,6 +168,7 @@ export default async function AdminClientesPage() {
                                 {data.clients.length === 0 && (
                                     <tr><td colSpan={7} className="px-4 py-8 text-center text-muted">Sin clientes registrados. Usa el formulario de arriba para crear el primero.</td></tr>
                                 )}
+                                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                 {data.clients.map((c: any) => (
                                     <tr key={c.id} className="border-b border-border/50 hover:bg-surface-2/50 transition-colors">
                                         <td className="px-4 py-2.5">

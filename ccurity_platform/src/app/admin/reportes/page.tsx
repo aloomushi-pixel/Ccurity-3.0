@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { UserNav } from "@/components/user-nav";
 import { createClient } from "@/lib/supabase/server";
+import type { Metadata } from "next";
+
 
 async function getReportsData() {
     const supabase = await createClient();
@@ -8,6 +10,7 @@ async function getReportsData() {
     // Users by role
     const { data: profiles } = await supabase.from("profiles").select("role");
     const roleCounts: Record<string, number> = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (profiles ?? []).forEach((p: any) => { roleCounts[p.role] = (roleCounts[p.role] || 0) + 1; });
 
     // Services by type and state
@@ -15,13 +18,13 @@ async function getReportsData() {
         .from("services")
         .select("typeId, stateId, scheduledDate, type:service_types(name, color), state:service_states(name, color)");
 
-    const { data: serviceTypes } = await supabase.from("service_types").select("id, name, color");
-    const { data: serviceStates } = await supabase.from("service_states").select("id, name, color");
+
 
     const typeStats: Record<string, { name: string; color: string; count: number }> = {};
     const stateStats: Record<string, { name: string; color: string; count: number }> = {};
     const monthlyServices: Record<string, number> = {};
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (services ?? []).forEach((s: any) => {
         if (s.type) {
             if (!typeStats[s.type.name]) typeStats[s.type.name] = { name: s.type.name, color: s.type.color, count: 0 };
@@ -39,27 +42,36 @@ async function getReportsData() {
 
     // Financial data
     const { data: contracts } = await supabase.from("contracts").select("amount, status");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const totalContractValue = (contracts ?? []).reduce((s: number, c: any) => s + Number(c.amount), 0);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const activeContracts = (contracts ?? []).filter((c: any) => c.status === "active").length;
 
     const { data: payments } = await supabase.from("payments").select("amount, status, method");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const totalPaid = (payments ?? []).filter((p: any) => p.status === "completed").reduce((s: number, p: any) => s + Number(p.amount), 0);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const totalPending = (payments ?? []).filter((p: any) => p.status === "pending").reduce((s: number, p: any) => s + Number(p.amount), 0);
 
     const methodStats: Record<string, number> = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (payments ?? []).forEach((p: any) => {
         if (p.method) methodStats[p.method] = (methodStats[p.method] || 0) + 1;
     });
 
     const { data: invoices } = await supabase.from("invoices").select("amount, status");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const totalInvoiced = (invoices ?? []).reduce((s: number, i: any) => s + Number(i.amount), 0);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const overdue = (invoices ?? []).filter((i: any) => i.status === "overdue").length;
 
     // Clients
     const { count: totalClients } = await supabase.from("clients").select("id", { count: "exact", head: true });
     const { count: totalQuotations } = await supabase.from("quotations").select("id", { count: "exact", head: true });
     const { data: quotations } = await supabase.from("quotations").select("total, status");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const totalQuotationValue = (quotations ?? []).reduce((s: number, q: any) => s + Number(q.total || 0), 0);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const approvedQuotations = (quotations ?? []).filter((q: any) => q.status === "approved").length;
 
     // Messages
@@ -87,6 +99,12 @@ async function getReportsData() {
         totalMessages: totalMessages ?? 0,
     };
 }
+
+
+export const metadata: Metadata = {
+  title: "Reportes — Ccurity Admin",
+  description: "Reportes y analytics de la operación del negocio.",
+};
 
 export default async function ReportesPage() {
     const d = await getReportsData();

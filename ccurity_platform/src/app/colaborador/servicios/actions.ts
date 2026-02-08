@@ -24,9 +24,9 @@ export async function applyToServiceAction(formData: FormData) {
         await applyToService(serviceId, userId, message);
         revalidatePath("/colaborador/servicios");
         return { success: true };
-    } catch (e: any) {
+    } catch (e: unknown) {
         // Handle unique constraint (already applied)
-        if (e?.code === "23505") {
+        if (e && typeof e === "object" && "code" in e && (e as Record<string, unknown>).code === "23505") {
             return { error: "Ya te postulaste a este servicio" };
         }
         return { error: "Error al postularse" };

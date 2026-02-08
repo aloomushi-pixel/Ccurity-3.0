@@ -45,6 +45,7 @@ export async function getCollaboratorPrices(
 
     if (error) throw error;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (data ?? []).map((row: any) => ({
         id: row.id,
         collaboratorId: row.collaboratorId,

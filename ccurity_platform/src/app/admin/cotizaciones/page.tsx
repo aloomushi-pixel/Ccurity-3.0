@@ -5,6 +5,7 @@ import {
     updateQuotationStatusAction,
     duplicateQuotationAction,
 } from "./actions";
+import type { Metadata } from "next";
 
 const statusLabels: Record<string, string> = {
     DRAFT: "Borrador",
@@ -25,6 +26,12 @@ const statusColors: Record<string, string> = {
 const nextStatus: Record<string, string> = {
     DRAFT: "SENT",
     SENT: "ACCEPTED",
+};
+
+
+export const metadata: Metadata = {
+    title: "Cotizaciones — Ccurity Admin",
+    description: "Creación y seguimiento de cotizaciones.",
 };
 
 export default async function CotizacionesPage() {

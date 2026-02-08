@@ -56,6 +56,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
     if (!data) notFound();
 
     const { client } = data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const totalContractValue = data.contracts.reduce((s: number, c: any) => s + Number(c.amount), 0);
 
     return (
@@ -134,6 +135,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
                         {data.contracts.length === 0 && (
                             <div className="px-5 py-6 text-center text-muted text-sm">Sin contratos</div>
                         )}
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         {data.contracts.map((c: any) => (
                             <Link key={c.id} href={`/admin/finanzas/${c.id}`} className="block px-5 py-3 hover:bg-surface-2/50 transition-colors">
                                 <div className="flex items-center justify-between">
@@ -162,6 +164,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
                             {data.services.length === 0 && (
                                 <div className="px-5 py-6 text-center text-muted text-sm">Sin servicios</div>
                             )}
+                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                             {data.services.map((s: any) => (
                                 <div key={s.id} className="px-5 py-3 flex items-center justify-between">
                                     <div className="min-w-0 flex-1">
@@ -189,6 +192,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
                             {data.quotations.length === 0 && (
                                 <div className="px-5 py-6 text-center text-muted text-sm">Sin cotizaciones</div>
                             )}
+                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                             {data.quotations.map((q: any) => (
                                 <div key={q.id} className="px-5 py-3 flex items-center justify-between">
                                     <div>

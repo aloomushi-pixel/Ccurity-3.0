@@ -4,6 +4,8 @@ import { getContracts, getFinanceStats } from "@/lib/data/contracts";
 import { getContractTypes } from "@/lib/data/contract-types";
 import { createContractAction, updateContractStatusAction, deleteContractAction } from "./actions";
 import { createClient } from "@/lib/supabase/server";
+import type { Metadata } from "next";
+
 
 const statusColors: Record<string, string> = {
     DRAFT: "bg-gray-500/20 text-gray-300",
@@ -27,6 +29,12 @@ async function getUsers() {
     return data ?? [];
 }
 
+
+export const metadata: Metadata = {
+  title: "Finanzas — Ccurity Admin",
+  description: "Control financiero, facturación y gestión de contratos.",
+};
+
 export default async function FinanzasPage() {
     const [contracts, stats, users, contractTypes] = await Promise.all([
         getContracts(),
@@ -36,7 +44,9 @@ export default async function FinanzasPage() {
     ]);
 
     // Separate clients and collaborators
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const clients = users.filter((u: any) => u.role === "CLIENT");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const collaborators = users.filter((u: any) => u.role === "COLLABORATOR" || u.role === "COLAB");
 
     // Group contract types by service type for the form selector
@@ -134,6 +144,7 @@ export default async function FinanzasPage() {
                                 <option value="">Seleccionar…</option>
                                 {clients.length > 0 && (
                                     <optgroup label="👤 Clientes">
+                                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                         {clients.map((c: any) => (
                                             <option key={c.id} value={c.id}>{c.name} — {c.email}</option>
                                         ))}
@@ -141,6 +152,7 @@ export default async function FinanzasPage() {
                                 )}
                                 {collaborators.length > 0 && (
                                     <optgroup label="🤝 Colaboradores">
+                                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                         {collaborators.map((c: any) => (
                                             <option key={c.id} value={c.id}>{c.name} — {c.email}</option>
                                         ))}

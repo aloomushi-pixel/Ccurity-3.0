@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { UserNav } from "@/components/user-nav";
 import { createClient } from "@/lib/supabase/server";
+import type { Metadata } from "next";
+
 
 async function getCalendarData() {
     const supabase = await createClient();
@@ -45,11 +47,19 @@ async function getCalendarData() {
     };
 }
 
+
+export const metadata: Metadata = {
+  title: "Calendario — Ccurity Admin",
+  description: "Calendario de servicios, instalaciones y mantenimientos programados.",
+};
+
 export default async function CalendarioPage() {
     const d = await getCalendarData();
 
     // Group services by day
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const servicesByDay: Record<number, any[]> = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     d.services.forEach((s: any) => {
         if (s.scheduledDate) {
             const day = new Date(s.scheduledDate).getDate();
@@ -59,7 +69,9 @@ export default async function CalendarioPage() {
     });
 
     // Group expiring contracts by day
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const contractsByDay: Record<number, any[]> = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     d.expiringContracts.forEach((c: any) => {
         if (c.endDate) {
             const day = new Date(c.endDate).getDate();
@@ -129,6 +141,7 @@ export default async function CalendarioPage() {
                                         }`}>
                                         <span className={`text-xs font-mono ${isToday ? "font-bold text-primary-light" : "text-muted"}`}>{day}</span>
                                         <div className="flex gap-0.5 mt-0.5 flex-wrap justify-center">
+                                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                             {hasServices && servicesByDay[day].slice(0, 3).map((s: any, i: number) => (
                                                 <span key={i} className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: s.type?.color || "#6366f1" }}></span>
                                             ))}
@@ -156,6 +169,7 @@ export default async function CalendarioPage() {
                         {d.upcomingServices.length === 0 && (
                             <div className="px-5 py-6 text-center text-muted text-sm">Sin servicios programados esta semana</div>
                         )}
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         {d.upcomingServices.map((s: any) => (
                             <div key={s.id} className="px-5 py-3 flex items-center justify-between">
                                 <div className="min-w-0 flex-1">

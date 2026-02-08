@@ -1,0 +1,26 @@
+const fs = require('fs');
+const path = require('path');
+
+function createSVG(size) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="url(#g)"/>
+  <circle cx="256" cy="256" r="140" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="24"/>
+  <path d="M256 160 L256 200 M256 312 L256 352 M200 256 L160 256 M352 256 L312 256" stroke="rgba(255,255,255,0.1)" stroke-width="16" stroke-linecap="round"/>
+  <text x="256" y="290" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="bold" font-size="160" fill="white" letter-spacing="-8">Cc</text>
+</svg>`;
+}
+
+const publicDir = path.join(__dirname, '..', 'public');
+
+// Write SVG icons that will work as PWA icons
+fs.writeFileSync(path.join(publicDir, 'icon-192.svg'), createSVG(192));
+fs.writeFileSync(path.join(publicDir, 'icon-512.svg'), createSVG(512));
+
+console.log('SVG icons generated in public/');
+console.log('Note: For production PWA, convert these to PNG using a tool like sharp or an online converter.');

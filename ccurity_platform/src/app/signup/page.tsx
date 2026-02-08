@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { signup } from "@/app/auth/actions";
+import type { Metadata } from "next";
+
 
 const roles = [
     {
@@ -27,6 +29,12 @@ const roles = [
         icon: "👤",
     },
 ];
+
+
+export const metadata: Metadata = {
+    title: "Crear Cuenta — Ccurity",
+    description: "Regístrate en Ccurity, la plataforma integral para empresas de seguridad electrónica.",
+};
 
 export default async function SignupPage({
     searchParams,
@@ -75,6 +83,7 @@ export default async function SignupPage({
                                 id="full_name"
                                 name="full_name"
                                 type="text"
+                                autoComplete="name"
                                 required
                                 placeholder="Juan Pérez"
                                 className="w-full px-4 py-2.5 rounded-lg bg-surface-2 border border-border text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
@@ -92,6 +101,7 @@ export default async function SignupPage({
                                 id="email"
                                 name="email"
                                 type="email"
+                                autoComplete="email"
                                 required
                                 placeholder="tu@empresa.com"
                                 className="w-full px-4 py-2.5 rounded-lg bg-surface-2 border border-border text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
@@ -109,6 +119,7 @@ export default async function SignupPage({
                                 id="password"
                                 name="password"
                                 type="password"
+                                autoComplete="new-password"
                                 required
                                 minLength={6}
                                 placeholder="Mínimo 6 caracteres"

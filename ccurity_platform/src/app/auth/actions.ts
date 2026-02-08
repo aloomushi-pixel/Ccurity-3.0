@@ -19,8 +19,8 @@ export async function login(formData: FormData) {
         if (error) {
             authError = error.message;
         }
-    } catch (e: any) {
-        authError = e?.message || "Error de conexión. Verifica tu red e intenta de nuevo.";
+    } catch (e: unknown) {
+        authError = e instanceof Error ? e.message : "Error de conexión. Verifica tu red e intenta de nuevo.";
     }
 
     if (authError) {
@@ -56,11 +56,12 @@ export async function login(formData: FormData) {
             revalidatePath("/", "layout");
             redirect(destination);
         }
-    } catch (e: any) {
+    } catch (e: unknown) {
         // Re-throw redirect errors (Next.js uses them internally)
-        if (e?.digest?.startsWith("NEXT_REDIRECT")) throw e;
-        console.error("[LOGIN] Error:", e?.message);
-        redirect("/login?error=" + encodeURIComponent("Error obteniendo perfil: " + (e?.message || "desconocido")));
+        if (e && typeof e === "object" && "digest" in e && typeof (e as Record<string, unknown>).digest === "string" && ((e as Record<string, unknown>).digest as string).startsWith("NEXT_REDIRECT")) throw e;
+        const errMsg = e instanceof Error ? e.message : "desconocido";
+        console.error("[LOGIN] Error:", errMsg);
+        redirect("/login?error=" + encodeURIComponent("Error obteniendo perfil: " + errMsg));
     }
 
     revalidatePath("/", "layout");

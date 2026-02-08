@@ -76,6 +76,7 @@ export default async function PublishedQuotationPage({
                 <meta charSet="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <title>{quotation.title} — {company?.name || "Cotización"}</title>
+                {/* eslint-disable-next-line @next/next/no-page-custom-font */}
                 <link
                     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
                     rel="stylesheet"

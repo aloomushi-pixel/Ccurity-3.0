@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { UserNav } from "@/components/user-nav";
 import { createClient } from "@/lib/supabase/server";
-import { revalidatePath } from "next/cache";
+import type { Metadata } from "next";
+
+
 
 async function getDisputasData() {
     const supabase = await createClient();
@@ -43,6 +45,7 @@ async function getDisputasData() {
         recentMessages: recentMessages ?? [],
         problemContracts: contracts ?? [],
         overdueInvoices: overdueInvoices ?? [],
+        now: Date.now(),
     };
 }
 
@@ -52,10 +55,17 @@ const priorityColors: Record<string, string> = {
     baja: "bg-blue-500/20 text-blue-400 border-blue-500/30",
 };
 
+
+export const metadata: Metadata = {
+  title: "Disputas — Ccurity Admin",
+  description: "Gestión de disputas y reclamaciones de clientes.",
+};
+
 export default async function DisputasPage() {
     const data = await getDisputasData();
 
     const totalIssues = data.problemContracts.length + data.overdueInvoices.length;
+    const now = data.now;
 
     return (
         <div className="min-h-dvh bg-background">
@@ -93,7 +103,6 @@ export default async function DisputasPage() {
                     </div>
                 </div>
 
-                {/* Overdue Invoices as disputes */}
                 {data.overdueInvoices.length > 0 && (
                     <div className="glass-card overflow-hidden border-red-500/20">
                         <div className="px-5 py-3 border-b border-border bg-red-500/5 flex items-center justify-between">
@@ -101,8 +110,9 @@ export default async function DisputasPage() {
                             <span className={`text-xs px-2 py-0.5 rounded-full ${priorityColors.alta}`}>Alta Prioridad</span>
                         </div>
                         <div className="divide-y divide-border/50">
+                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                             {data.overdueInvoices.map((inv: any) => {
-                                const daysOverdue = Math.floor((Date.now() - new Date(inv.dueDate).getTime()) / (1000 * 60 * 60 * 24));
+                                const daysOverdue = Math.floor((now - new Date(inv.dueDate).getTime()) / (1000 * 60 * 60 * 24));
                                 return (
                                     <div key={inv.id} className="px-5 py-3 flex items-center justify-between hover:bg-surface-2/30 transition-colors">
                                         <div>
@@ -133,6 +143,7 @@ export default async function DisputasPage() {
                             <span className={`text-xs px-2 py-0.5 rounded-full ${priorityColors.media}`}>Media Prioridad</span>
                         </div>
                         <div className="divide-y divide-border/50">
+                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                             {data.problemContracts.map((c: any) => (
                                 <Link key={c.id} href={`/admin/finanzas/${c.id}`} className="block px-5 py-3 hover:bg-surface-2/30 transition-colors">
                                     <div className="flex items-center justify-between">
@@ -162,14 +173,15 @@ export default async function DisputasPage() {
                         {data.recentMessages.length === 0 && (
                             <div className="px-5 py-6 text-center text-muted text-sm">Sin mensajes recientes</div>
                         )}
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         {data.recentMessages.map((m: any) => (
                             <div key={m.id} className="px-5 py-2.5 hover:bg-surface-2/30 transition-colors">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2 min-w-0">
                                         <span className={`text-[10px] px-1.5 py-0.5 rounded-full flex-shrink-0 ${m.sender?.role === "admin" ? "bg-red-500/20 text-red-400" :
-                                                m.sender?.role === "supervisor" ? "bg-yellow-500/20 text-yellow-400" :
-                                                    m.sender?.role === "colaborador" ? "bg-blue-500/20 text-blue-400" :
-                                                        "bg-green-500/20 text-green-400"
+                                            m.sender?.role === "supervisor" ? "bg-yellow-500/20 text-yellow-400" :
+                                                m.sender?.role === "colaborador" ? "bg-blue-500/20 text-blue-400" :
+                                                    "bg-green-500/20 text-green-400"
                                             }`}>{m.sender?.role || "—"}</span>
                                         <span className="text-xs font-medium truncate">{m.sender?.full_name || "Anon"}</span>
                                     </div>

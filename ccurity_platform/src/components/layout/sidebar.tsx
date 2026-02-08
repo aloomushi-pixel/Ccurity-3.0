@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { navConfig, NavItem } from "@/config/nav";
+import { navConfig } from "@/config/nav";
 import { cn } from "@/lib/utils"; // Assuming utils exists, if not I'll create it or inline clsx
 import { X, LogOut } from "lucide-react";
 import { ThemeToggle } from "../ui/theme-toggle";
@@ -33,13 +33,14 @@ export function Sidebar({ role, isOpen, onClose }: SidebarProps) {
             {/* Sidebar Panel */}
             <aside
                 className={cn(
-                    "fixed top-0 left-0 z-50 h-full w-64 bg-surface-1 dark:bg-surface-2 border-r border-border transition-transform duration-300 lg:translate-x-0 lg:static",
+                    "fixed top-0 left-0 z-50 h-full w-64 border-r border-border transition-transform duration-300 lg:translate-x-0 lg:static",
+                    "bg-surface-1/60 dark:bg-surface-2/60 backdrop-blur-xl supports-[backdrop-filter]:bg-surface-1/60",
                     isOpen ? "translate-x-0" : "-translate-x-full"
                 )}
             >
-                <div className="flex h-16 items-center justify-between px-6 border-b border-border">
-                    <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-                        <span className="text-primary">✦</span> Ccurity
+                <div className="flex h-16 items-center justify-between px-6 border-b border-border/50">
+                    <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-br from-primary to-accent">✦</span> Ccurity
                     </Link>
                     <button
                         onClick={onClose}
@@ -57,28 +58,31 @@ export function Sidebar({ role, isOpen, onClose }: SidebarProps) {
                                 key={item.href}
                                 href={item.href}
                                 className={cn(
-                                    "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group",
+                                    "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group relative overflow-hidden",
                                     isActive
-                                        ? "bg-primary text-white shadow-lg shadow-primary/25"
-                                        : "text-muted hover:bg-surface-2 hover:text-foreground"
+                                        ? "text-white shadow-lg shadow-primary/25"
+                                        : "text-muted hover:bg-surface-2/50 hover:text-foreground"
                                 )}
                             >
+                                {isActive && (
+                                    <div className="absolute inset-0 bg-gradient-to-tr from-primary to-accent opacity-100 z-0" />
+                                )}
                                 <item.icon
                                     className={cn(
-                                        "w-5 h-5 transition-transform group-hover:scale-110",
+                                        "w-5 h-5 transition-transform group-hover:scale-110 relative z-10",
                                         isActive ? "text-white" : "text-muted group-hover:text-primary"
                                     )}
                                 />
-                                <span className="font-medium">{item.title}</span>
+                                <span className="font-medium relative z-10">{item.title}</span>
                             </Link>
                         );
                     })}
                 </nav>
 
-                <div className="absolute bottom-0 left-0 w-full p-4 border-t border-border bg-surface-1/50 dark:bg-surface-2/50 backdrop-blur-sm">
+                <div className="absolute bottom-0 left-0 w-full p-4 border-t border-border/50 bg-gradient-to-t from-surface-1/80 to-transparent backdrop-blur-sm">
                     <div className="flex items-center justify-between px-2">
                         <ThemeToggle />
-                        <button className="text-sm text-muted hover:text-danger flex items-center gap-2 transition-colors">
+                        <button className="text-sm text-muted hover:text-danger flex items-center gap-2 transition-colors font-medium">
                             <LogOut size={16} />
                             <span>Salir</span>
                         </button>

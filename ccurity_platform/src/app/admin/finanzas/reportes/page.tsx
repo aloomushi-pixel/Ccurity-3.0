@@ -17,6 +17,7 @@ export default async function ReportesPage() {
     // Top clients by contract count
     const clientTotalMap = new Map<string, { name: string; count: number }>();
     for (const c of contracts) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const name = (c as any).client?.name ?? "Sin cliente";
         const entry = clientTotalMap.get(name) ?? { name, count: 0 };
         entry.count++;

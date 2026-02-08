@@ -1,0 +1,40 @@
+# Dependencies
+node_modules
+npm-debug.log*
+
+# Build output
+.next
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Environment (secrets stay local)
+.env
+.env.local
+.env.*.local
+
+# Tests
+tests/
+playwright-report/
+test-results/
+playwright.config.ts
+
+# Development files
+scripts/
+*.md
+LICENSE
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Agent/skills
+.agent/
+.gemini/

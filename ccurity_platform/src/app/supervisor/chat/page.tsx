@@ -1,4 +1,4 @@
-import { getConversations, getConversationMessages } from "@/lib/data/conversations";
+import { getConversations } from "@/lib/data/conversations";
 import Link from "next/link";
 
 export default async function SupervisorChatPage() {

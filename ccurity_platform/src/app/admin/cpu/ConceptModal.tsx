@@ -205,6 +205,7 @@ export default function ConceptModal({
                                 placeholder="https://..."
                             />
                             {form.imageUrl && (
+                                // eslint-disable-next-line @next/next/no-img-element
                                 <img
                                     src={form.imageUrl}
                                     alt="Preview"

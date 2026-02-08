@@ -58,8 +58,8 @@ export async function acceptApplicationAction(formData: FormData) {
 
         revalidatePath("/admin/servicios/postulaciones");
         return { success: true };
-    } catch (err: any) {
-        return { success: false, error: err.message || "Error al aceptar" };
+    } catch (err: unknown) {
+        return { success: false, error: err instanceof Error ? err.message : "Error al aceptar" };
     }
 }
 
@@ -77,7 +77,7 @@ export async function rejectApplicationAction(formData: FormData) {
         await updateApplicationStatus(applicationId, "rejected");
         revalidatePath("/admin/servicios/postulaciones");
         return { success: true };
-    } catch (err: any) {
-        return { success: false, error: err.message || "Error al rechazar" };
+    } catch (err: unknown) {
+        return { success: false, error: err instanceof Error ? err.message : "Error al rechazar" };
     }
 }

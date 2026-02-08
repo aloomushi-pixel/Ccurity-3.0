@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { UserNav } from "@/components/user-nav";
 import { createClient } from "@/lib/supabase/server";
+import type { Metadata } from "next";
+
 
 async function getAuditData() {
     const supabase = await createClient();
@@ -36,6 +38,7 @@ async function getAuditData() {
     // Build unified timeline
     const timeline: { type: string; icon: string; title: string; detail: string; time: string }[] = [];
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (recentProfiles ?? []).forEach((p: any) => {
         timeline.push({
             type: "user",
@@ -46,6 +49,7 @@ async function getAuditData() {
         });
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (recentServices ?? []).forEach((s: any) => {
         timeline.push({
             type: "service",
@@ -56,6 +60,7 @@ async function getAuditData() {
         });
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (recentContracts ?? []).forEach((c: any) => {
         timeline.push({
             type: "contract",
@@ -66,6 +71,7 @@ async function getAuditData() {
         });
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (recentMessages ?? []).forEach((m: any) => {
         timeline.push({
             type: "message",
@@ -102,6 +108,12 @@ const typeLabels: Record<string, string> = {
     service: "Servicio",
     contract: "Contrato",
     message: "Mensaje",
+};
+
+
+export const metadata: Metadata = {
+  title: "Auditoría — Ccurity Admin",
+  description: "Registro de auditoría y trazabilidad de acciones del sistema.",
 };
 
 export default async function AuditPage() {
