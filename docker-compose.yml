@@ -1,5 +1,5 @@
 services:
-  ccurity-app:
+  app:
     build:
       context: ./ccurity_platform
       dockerfile: Dockerfile
