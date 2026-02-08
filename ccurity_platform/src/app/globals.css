@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand Colors - Modern Indigo/Violet */
+  --ccurity-primary: #6366f1;
+  /* Indigo-500 */
+  --ccurity-primary-light: #818cf8;
+  /* Indigo-400 */
+  --ccurity-primary-dark: #4f46e5;
+  /* Indigo-600 */
+  --ccurity-accent: #8b5cf6;
+  /* Violet-500 */
+  --ccurity-success: #10b981;
+  /* Emerald-500 */
+  --ccurity-warning: #f59e0b;
+  /* Amber-500 */
+  --ccurity-danger: #ef4444;
+  /* Red-500 */
+
+  /* Surfaces - Light (Slate) */
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --surface-1: #ffffff;
+  --surface-2: #f1f5f9;
+  --surface-3: #e2e8f0;
+  --border: #cbd5e1;
+  --muted: #64748b;
+}
+
+[data-theme='dark'] {
+  /* Surfaces - Dark (Deep Slate) */
+  --background: #020617;
+  --foreground: #f8fafc;
+  --surface-1: #0f172a;
+  --surface-2: #1e293b;
+  --surface-3: #334155;
+  --border: #334155;
+  --muted: #94a3b8;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-primary: var(--ccurity-primary);
+  --color-primary-light: var(--ccurity-primary-light);
+  --color-primary-dark: var(--ccurity-primary-dark);
+  --color-accent: var(--ccurity-accent);
+  --color-success: var(--ccurity-success);
+  --color-warning: var(--ccurity-warning);
+  --color-danger: var(--ccurity-danger);
+  --font-sans: var(--font-inter);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  min-height: 100dvh;
+}
+
+/* Utility: Glass Card */
+.glass-card {
+  background: color-mix(in srgb, var(--surface-1) 80%, transparent);
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+  border-radius: 1rem;
+}
+
+/* Utility: Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--ccurity-primary), var(--ccurity-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Utility: Glow effect */
+.glow {
+  box-shadow: 0 0 20px color-mix(in srgb, var(--ccurity-primary) 25%, transparent),
+    0 0 60px color-mix(in srgb, var(--ccurity-primary) 10%, transparent);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--surface-3);
+  border-radius: 3px;
+}
