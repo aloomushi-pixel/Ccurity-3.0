@@ -1,14 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
+
+export const dynamic = "force-dynamic";
 
 // Usar service_role para webhooks (no hay usuario autenticado)
-const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { auth: { persistSession: false } }
-);
+let _supabaseAdmin: SupabaseClient | null = null;
+function getSupabaseAdmin() {
+    if (!_supabaseAdmin) {
+        _supabaseAdmin = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+            { auth: { persistSession: false } }
+        );
+    }
+    return _supabaseAdmin;
+}
 
 export async function POST(request: NextRequest) {
+
     try {
         const body = await request.json();
         const { type, data } = body;
@@ -18,7 +27,7 @@ export async function POST(request: NextRequest) {
         if (type === "email.received") {
             const { from, to, subject, html, text, created_at } = data;
 
-            await supabaseAdmin.from("emails").insert({
+            await getSupabaseAdmin().from("emails").insert({
                 resend_id: data.email_id || null,
                 direction: "inbound",
                 from_address: from,
@@ -44,7 +53,7 @@ export async function POST(request: NextRequest) {
             };
 
             if (data.email_id) {
-                await supabaseAdmin
+                await getSupabaseAdmin()
                     .from("emails")
                     .update({ status: statusMap[type] })
                     .eq("resend_id", data.email_id);

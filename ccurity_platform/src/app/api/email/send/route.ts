@@ -3,6 +3,9 @@ import { resend, DEFAULT_FROM } from "@/lib/resend";
 import { saveEmail } from "@/lib/data/emails";
 import { createClient } from "@/lib/supabase/server";
 
+export const dynamic = "force-dynamic";
+
+
 export async function POST(request: NextRequest) {
     try {
         // Verificar autenticación
