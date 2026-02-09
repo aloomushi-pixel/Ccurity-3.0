@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { UserNav } from "@/components/user-nav";
+
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 
@@ -60,159 +60,144 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ i
     const totalContractValue = data.contracts.reduce((s: number, c: any) => s + Number(c.amount), 0);
 
     return (
-        <div className="min-h-dvh bg-background">
-            <header className="sticky top-0 z-50 glass-card rounded-none border-x-0 border-t-0 px-6 py-4 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                    <Link href="/admin/clientes" className="text-muted hover:text-foreground transition-colors text-sm">
-                        ← Clientes
-                    </Link>
-                    <span className="text-border">|</span>
-                    <h1 className="text-lg font-semibold">
-                        🏢 <span className="gradient-text">{client.name}</span>
-                    </h1>
-                </div>
-                <UserNav />
-            </header>
-
-            <main className="max-w-5xl mx-auto px-4 py-8 space-y-6">
-                {/* Client info card */}
-                <div className="glass-card p-5">
-                    <div className="flex items-center gap-4 mb-4">
-                        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-primary-light flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
-                            {client.name.charAt(0).toUpperCase()}
-                        </div>
-                        <div>
-                            <h2 className="text-xl font-bold">{client.name}</h2>
-                            {client.company && <p className="text-sm text-muted">{client.company}</p>}
-                        </div>
+        <>
+            {/* Client info card */}
+            <div className="glass-card p-5">
+                <div className="flex items-center gap-4 mb-4">
+                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-primary-light flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
+                        {client.name.charAt(0).toUpperCase()}
                     </div>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                        <div>
-                            <p className="text-xs text-muted mb-1">Email</p>
-                            <p className="font-mono">{client.email || "—"}</p>
-                        </div>
-                        <div>
-                            <p className="text-xs text-muted mb-1">Teléfono</p>
-                            <p>{client.phone || "—"}</p>
-                        </div>
-                        <div>
-                            <p className="text-xs text-muted mb-1">RFC</p>
-                            <p className="font-mono">{client.rfc || "—"}</p>
-                        </div>
-                        <div>
-                            <p className="text-xs text-muted mb-1">Dirección</p>
-                            <p>{client.address || "—"}</p>
-                        </div>
+                    <div>
+                        <h2 className="text-xl font-bold">{client.name}</h2>
+                        {client.company && <p className="text-sm text-muted">{client.company}</p>}
                     </div>
                 </div>
-
-                {/* Stats */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="glass-card p-4 text-center">
-                        <p className="text-2xl font-bold">{data.contracts.length}</p>
-                        <p className="text-xs text-muted">Contratos</p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                    <div>
+                        <p className="text-xs text-muted mb-1">Email</p>
+                        <p className="font-mono">{client.email || "—"}</p>
                     </div>
-                    <div className="glass-card p-4 text-center">
-                        <p className="text-2xl font-bold font-mono">${totalContractValue.toLocaleString("es-MX")}</p>
-                        <p className="text-xs text-muted">Valor Total</p>
+                    <div>
+                        <p className="text-xs text-muted mb-1">Teléfono</p>
+                        <p>{client.phone || "—"}</p>
                     </div>
-                    <div className="glass-card p-4 text-center">
-                        <p className="text-2xl font-bold">{data.services.length}</p>
-                        <p className="text-xs text-muted">Servicios</p>
+                    <div>
+                        <p className="text-xs text-muted mb-1">RFC</p>
+                        <p className="font-mono">{client.rfc || "—"}</p>
                     </div>
-                    <div className="glass-card p-4 text-center">
-                        <p className="text-2xl font-bold">{data.quotations.length}</p>
-                        <p className="text-xs text-muted">Cotizaciones</p>
+                    <div>
+                        <p className="text-xs text-muted mb-1">Dirección</p>
+                        <p>{client.address || "—"}</p>
                     </div>
                 </div>
+            </div>
 
-                {/* Contracts */}
+            {/* Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="glass-card p-4 text-center">
+                    <p className="text-2xl font-bold">{data.contracts.length}</p>
+                    <p className="text-xs text-muted">Contratos</p>
+                </div>
+                <div className="glass-card p-4 text-center">
+                    <p className="text-2xl font-bold font-mono">${totalContractValue.toLocaleString("es-MX")}</p>
+                    <p className="text-xs text-muted">Valor Total</p>
+                </div>
+                <div className="glass-card p-4 text-center">
+                    <p className="text-2xl font-bold">{data.services.length}</p>
+                    <p className="text-xs text-muted">Servicios</p>
+                </div>
+                <div className="glass-card p-4 text-center">
+                    <p className="text-2xl font-bold">{data.quotations.length}</p>
+                    <p className="text-xs text-muted">Cotizaciones</p>
+                </div>
+            </div>
+
+            {/* Contracts */}
+            <div className="glass-card overflow-hidden">
+                <div className="px-5 py-3 border-b border-border">
+                    <h2 className="font-semibold text-sm">📄 Contratos</h2>
+                </div>
+                <div className="divide-y divide-border/50">
+                    {data.contracts.length === 0 && (
+                        <div className="px-5 py-6 text-center text-muted text-sm">Sin contratos</div>
+                    )}
+                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                    {data.contracts.map((c: any) => (
+                        <Link key={c.id} href={`/admin/finanzas/${c.id}`} className="block px-5 py-3 hover:bg-surface-2/50 transition-colors">
+                            <div className="flex items-center justify-between">
+                                <p className="font-medium text-sm">{c.title}</p>
+                                <span className={`text-xs px-2 py-0.5 rounded-full ${statusBadge[c.status]}`}>
+                                    {c.status}
+                                </span>
+                            </div>
+                            <div className="flex items-center justify-between text-xs text-muted mt-1">
+                                <span className="font-mono">${Number(c.amount).toLocaleString("es-MX")}</span>
+                                {c.endDate && <span>Vence: {new Date(c.endDate).toLocaleDateString("es-MX")}</span>}
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </div>
+
+            {/* Services and Quotations side by side */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Services */}
                 <div className="glass-card overflow-hidden">
                     <div className="px-5 py-3 border-b border-border">
-                        <h2 className="font-semibold text-sm">📄 Contratos</h2>
+                        <h2 className="font-semibold text-sm">🔧 Servicios</h2>
                     </div>
                     <div className="divide-y divide-border/50">
-                        {data.contracts.length === 0 && (
-                            <div className="px-5 py-6 text-center text-muted text-sm">Sin contratos</div>
+                        {data.services.length === 0 && (
+                            <div className="px-5 py-6 text-center text-muted text-sm">Sin servicios</div>
                         )}
                         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                        {data.contracts.map((c: any) => (
-                            <Link key={c.id} href={`/admin/finanzas/${c.id}`} className="block px-5 py-3 hover:bg-surface-2/50 transition-colors">
-                                <div className="flex items-center justify-between">
-                                    <p className="font-medium text-sm">{c.title}</p>
-                                    <span className={`text-xs px-2 py-0.5 rounded-full ${statusBadge[c.status]}`}>
-                                        {c.status}
+                        {data.services.map((s: any) => (
+                            <div key={s.id} className="px-5 py-3 flex items-center justify-between">
+                                <div className="min-w-0 flex-1">
+                                    <p className="text-sm font-medium truncate">{s.description || `#${s.id.slice(0, 8)}`}</p>
+                                    {s.scheduledDate && (
+                                        <p className="text-xs text-muted">📅 {new Date(s.scheduledDate).toLocaleDateString("es-MX")}</p>
+                                    )}
+                                </div>
+                                {s.state && (
+                                    <span className="px-2 py-0.5 rounded-full text-xs ml-2" style={{ backgroundColor: `${s.state.color}30`, color: s.state.color }}>
+                                        {s.state.name}
                                     </span>
-                                </div>
-                                <div className="flex items-center justify-between text-xs text-muted mt-1">
-                                    <span className="font-mono">${Number(c.amount).toLocaleString("es-MX")}</span>
-                                    {c.endDate && <span>Vence: {new Date(c.endDate).toLocaleDateString("es-MX")}</span>}
-                                </div>
-                            </Link>
+                                )}
+                            </div>
                         ))}
                     </div>
                 </div>
 
-                {/* Services and Quotations side by side */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Services */}
-                    <div className="glass-card overflow-hidden">
-                        <div className="px-5 py-3 border-b border-border">
-                            <h2 className="font-semibold text-sm">🔧 Servicios</h2>
-                        </div>
-                        <div className="divide-y divide-border/50">
-                            {data.services.length === 0 && (
-                                <div className="px-5 py-6 text-center text-muted text-sm">Sin servicios</div>
-                            )}
-                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                            {data.services.map((s: any) => (
-                                <div key={s.id} className="px-5 py-3 flex items-center justify-between">
-                                    <div className="min-w-0 flex-1">
-                                        <p className="text-sm font-medium truncate">{s.description || `#${s.id.slice(0, 8)}`}</p>
-                                        {s.scheduledDate && (
-                                            <p className="text-xs text-muted">📅 {new Date(s.scheduledDate).toLocaleDateString("es-MX")}</p>
-                                        )}
-                                    </div>
-                                    {s.state && (
-                                        <span className="px-2 py-0.5 rounded-full text-xs ml-2" style={{ backgroundColor: `${s.state.color}30`, color: s.state.color }}>
-                                            {s.state.name}
-                                        </span>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
+                {/* Quotations */}
+                <div className="glass-card overflow-hidden">
+                    <div className="px-5 py-3 border-b border-border">
+                        <h2 className="font-semibold text-sm">📋 Cotizaciones</h2>
                     </div>
-
-                    {/* Quotations */}
-                    <div className="glass-card overflow-hidden">
-                        <div className="px-5 py-3 border-b border-border">
-                            <h2 className="font-semibold text-sm">📋 Cotizaciones</h2>
-                        </div>
-                        <div className="divide-y divide-border/50">
-                            {data.quotations.length === 0 && (
-                                <div className="px-5 py-6 text-center text-muted text-sm">Sin cotizaciones</div>
-                            )}
-                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                            {data.quotations.map((q: any) => (
-                                <div key={q.id} className="px-5 py-3 flex items-center justify-between">
-                                    <div>
-                                        <p className="text-sm font-mono font-medium">{q.folio || `#${q.id.slice(0, 8)}`}</p>
-                                        <p className="text-xs text-muted">
-                                            {new Date(q.created_at).toLocaleDateString("es-MX")}
-                                        </p>
-                                    </div>
-                                    <div className="text-right">
-                                        <p className="font-mono text-sm">${Number(q.total || 0).toLocaleString("es-MX")}</p>
-                                        <span className={`text-xs px-2 py-0.5 rounded-full ${statusBadge[q.status]}`}>
-                                            {q.status}
-                                        </span>
-                                    </div>
+                    <div className="divide-y divide-border/50">
+                        {data.quotations.length === 0 && (
+                            <div className="px-5 py-6 text-center text-muted text-sm">Sin cotizaciones</div>
+                        )}
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                        {data.quotations.map((q: any) => (
+                            <div key={q.id} className="px-5 py-3 flex items-center justify-between">
+                                <div>
+                                    <p className="text-sm font-mono font-medium">{q.folio || `#${q.id.slice(0, 8)}`}</p>
+                                    <p className="text-xs text-muted">
+                                        {new Date(q.created_at).toLocaleDateString("es-MX")}
+                                    </p>
                                 </div>
-                            ))}
-                        </div>
+                                <div className="text-right">
+                                    <p className="font-mono text-sm">${Number(q.total || 0).toLocaleString("es-MX")}</p>
+                                    <span className={`text-xs px-2 py-0.5 rounded-full ${statusBadge[q.status]}`}>
+                                        {q.status}
+                                    </span>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
-            </main>
-        </div>
+            </div>
+        </>
     );
 }

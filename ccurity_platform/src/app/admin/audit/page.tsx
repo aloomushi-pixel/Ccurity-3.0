@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { UserNav } from "@/components/user-nav";
+
 import { createClient } from "@/lib/supabase/server";
 import type { Metadata } from "next";
 
@@ -112,81 +111,66 @@ const typeLabels: Record<string, string> = {
 
 
 export const metadata: Metadata = {
-  title: "Auditoría — Ccurity Admin",
-  description: "Registro de auditoría y trazabilidad de acciones del sistema.",
+    title: "Auditoría — Ccurity Admin",
+    description: "Registro de auditoría y trazabilidad de acciones del sistema.",
 };
 
 export default async function AuditPage() {
     const data = await getAuditData();
 
     return (
-        <div className="min-h-dvh bg-background">
-            <header className="sticky top-0 z-50 glass-card rounded-none border-x-0 border-t-0 px-6 py-4 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                    <Link href="/admin" className="text-muted hover:text-foreground transition-colors text-sm">
-                        ← Admin
-                    </Link>
-                    <span className="text-border">|</span>
-                    <h1 className="text-lg font-semibold">
-                        📝 <span className="gradient-text">Auditoría</span>
-                    </h1>
-                </div>
-                <UserNav />
-            </header>
+        <>
+            {/* Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {[
+                    { label: "Usuarios", value: data.counts.users, icon: "👤", color: "text-blue-400" },
+                    { label: "Servicios", value: data.counts.services, icon: "🔧", color: "text-green-400" },
+                    { label: "Contratos", value: data.counts.contracts, icon: "📄", color: "text-purple-400" },
+                    { label: "Mensajes", value: data.counts.messages, icon: "💬", color: "text-cyan-400" },
+                ].map((s) => (
+                    <div key={s.label} className="glass-card p-4 text-center">
+                        <span className="text-xl block mb-1">{s.icon}</span>
+                        <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
+                        <p className="text-xs text-muted">Recientes</p>
+                    </div>
+                ))}
+            </div>
 
-            <main className="max-w-5xl mx-auto px-4 py-8 space-y-6">
-                {/* Stats */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {[
-                        { label: "Usuarios", value: data.counts.users, icon: "👤", color: "text-blue-400" },
-                        { label: "Servicios", value: data.counts.services, icon: "🔧", color: "text-green-400" },
-                        { label: "Contratos", value: data.counts.contracts, icon: "📄", color: "text-purple-400" },
-                        { label: "Mensajes", value: data.counts.messages, icon: "💬", color: "text-cyan-400" },
-                    ].map((s) => (
-                        <div key={s.label} className="glass-card p-4 text-center">
-                            <span className="text-xl block mb-1">{s.icon}</span>
-                            <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
-                            <p className="text-xs text-muted">Recientes</p>
+            {/* Timeline */}
+            <div className="glass-card overflow-hidden">
+                <div className="px-5 py-3 border-b border-border flex items-center justify-between">
+                    <h2 className="font-semibold text-sm">🕐 Timeline de Actividad</h2>
+                    <span className="text-xs text-muted">{data.timeline.length} eventos</span>
+                </div>
+
+                <div className="divide-y divide-border/50">
+                    {data.timeline.length === 0 && (
+                        <div className="px-5 py-8 text-center text-muted text-sm">Sin actividad registrada</div>
+                    )}
+                    {data.timeline.map((event, idx) => (
+                        <div key={idx} className="px-5 py-3 flex items-start gap-4 hover:bg-surface-2/50 transition-colors">
+                            <span className="text-xl flex-shrink-0 mt-0.5">{event.icon}</span>
+                            <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2 mb-0.5">
+                                    <span className={`text-xs px-2 py-0.5 rounded-full ${typeColors[event.type]}`}>
+                                        {typeLabels[event.type]}
+                                    </span>
+                                    <span className="text-xs text-muted">
+                                        {new Date(event.time).toLocaleString("es-MX", {
+                                            day: "2-digit",
+                                            month: "short",
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                        })}
+                                    </span>
+                                </div>
+                                <p className="text-sm font-medium truncate">{event.title}</p>
+                                <p className="text-xs text-muted">{event.detail}</p>
+                            </div>
                         </div>
                     ))}
                 </div>
-
-                {/* Timeline */}
-                <div className="glass-card overflow-hidden">
-                    <div className="px-5 py-3 border-b border-border flex items-center justify-between">
-                        <h2 className="font-semibold text-sm">🕐 Timeline de Actividad</h2>
-                        <span className="text-xs text-muted">{data.timeline.length} eventos</span>
-                    </div>
-
-                    <div className="divide-y divide-border/50">
-                        {data.timeline.length === 0 && (
-                            <div className="px-5 py-8 text-center text-muted text-sm">Sin actividad registrada</div>
-                        )}
-                        {data.timeline.map((event, idx) => (
-                            <div key={idx} className="px-5 py-3 flex items-start gap-4 hover:bg-surface-2/50 transition-colors">
-                                <span className="text-xl flex-shrink-0 mt-0.5">{event.icon}</span>
-                                <div className="flex-1 min-w-0">
-                                    <div className="flex items-center gap-2 mb-0.5">
-                                        <span className={`text-xs px-2 py-0.5 rounded-full ${typeColors[event.type]}`}>
-                                            {typeLabels[event.type]}
-                                        </span>
-                                        <span className="text-xs text-muted">
-                                            {new Date(event.time).toLocaleString("es-MX", {
-                                                day: "2-digit",
-                                                month: "short",
-                                                hour: "2-digit",
-                                                minute: "2-digit",
-                                            })}
-                                        </span>
-                                    </div>
-                                    <p className="text-sm font-medium truncate">{event.title}</p>
-                                    <p className="text-xs text-muted">{event.detail}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </main>
-        </div>
+            </div>
+        </>
     );
 }
