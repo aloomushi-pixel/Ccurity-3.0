@@ -23,7 +23,7 @@ export function FloatingChatPanel({
     const selected = conversations.find((c) => c.id === selectedConv);
 
     return (
-        <div className="fixed bottom-24 right-6 z-[998] w-[380px] h-[500px] bg-surface border border-border rounded-2xl shadow-2xl shadow-black/30 flex flex-col overflow-hidden animate-in slide-in-from-bottom-3 duration-200">
+        <div className="fixed bottom-24 right-6 z-[998] w-[380px] h-[500px] bg-surface-1 backdrop-blur-xl border border-border rounded-2xl shadow-2xl shadow-black/30 flex flex-col overflow-hidden animate-in slide-in-from-bottom-3 duration-200">
             {selectedConv && selected ? (
                 <ChatView
                     conversationId={selectedConv}
@@ -172,8 +172,8 @@ function ChatView({
                         >
                             <div
                                 className={`max-w-[75%] rounded-2xl px-3 py-2 ${isMe
-                                        ? "bg-gradient-to-r from-primary to-accent text-white rounded-br-md"
-                                        : "bg-surface-2 border border-border rounded-bl-md"
+                                    ? "bg-gradient-to-r from-primary to-accent text-white rounded-br-md"
+                                    : "bg-surface-2 border border-border rounded-bl-md"
                                     }`}
                             >
                                 {!isMe && (
