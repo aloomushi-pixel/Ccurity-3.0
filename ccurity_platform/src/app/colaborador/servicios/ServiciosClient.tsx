@@ -12,6 +12,8 @@ type AvailableService = {
     typeName: string;
     typeColor: string;
     alreadyApplied: boolean;
+    estimatedCost: number;
+    costComplete: boolean;
 };
 
 type MyApplication = {
@@ -61,8 +63,8 @@ export function ServiciosClient({ availableServices, myApplications }: Props) {
                 <button
                     onClick={() => setTab("available")}
                     className={`px-4 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${tab === "available"
-                            ? "bg-primary text-white"
-                            : "text-muted hover:text-foreground"
+                        ? "bg-primary text-white"
+                        : "text-muted hover:text-foreground"
                         }`}
                 >
                     Disponibles ({availableServices.filter((s) => !appliedIds.has(s.id)).length})
@@ -70,8 +72,8 @@ export function ServiciosClient({ availableServices, myApplications }: Props) {
                 <button
                     onClick={() => setTab("mine")}
                     className={`px-4 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${tab === "mine"
-                            ? "bg-primary text-white"
-                            : "text-muted hover:text-foreground"
+                        ? "bg-primary text-white"
+                        : "text-muted hover:text-foreground"
                         }`}
                 >
                     Mis Postulaciones ({myApplications.length})
@@ -123,6 +125,29 @@ export function ServiciosClient({ availableServices, myApplications }: Props) {
                                     >
                                         {s.typeName}
                                     </span>
+                                </div>
+
+                                {/* Costo estimado */}
+                                <div className="bg-surface-2/50 border border-border/50 rounded-lg px-4 py-2 flex items-center gap-3">
+                                    <span className="text-xs text-muted">💰 Tu costo estimado:</span>
+                                    {s.costComplete ? (
+                                        <span className="text-sm font-bold font-mono text-green-400">
+                                            ${s.estimatedCost.toLocaleString("es-MX", {
+                                                minimumFractionDigits: 2,
+                                            })}
+                                        </span>
+                                    ) : s.estimatedCost > 0 ? (
+                                        <span className="text-sm font-mono text-yellow-400">
+                                            ~${s.estimatedCost.toLocaleString("es-MX", {
+                                                minimumFractionDigits: 2,
+                                            })}
+                                            <span className="text-[10px] text-muted ml-1">(incompleto)</span>
+                                        </span>
+                                    ) : (
+                                        <span className="text-xs text-muted">
+                                            Configura tus precios en &quot;Mis Precios&quot;
+                                        </span>
+                                    )}
                                 </div>
                                 <div className="flex gap-2">
                                     <input

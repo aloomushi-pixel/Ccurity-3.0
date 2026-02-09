@@ -10,6 +10,8 @@ type Application = {
     collaboratorEmail: string;
     message: string | null;
     createdAt: string;
+    estimatedCost: number;
+    costComplete: boolean;
 };
 
 type ServiceWithApplications = {
@@ -156,25 +158,42 @@ export function AdminPostulacionesClient({ services: initialServices }: Props) {
                                         )}
                                     </p>
                                 </div>
-                                <div className="flex gap-2 flex-shrink-0">
-                                    <button
-                                        onClick={() =>
-                                            handleAccept(service.id, app)
-                                        }
-                                        disabled={processing === app.id}
-                                        className="px-3 py-1.5 bg-green-500/20 text-green-400 hover:bg-green-500/30 rounded-lg text-xs font-medium transition-colors disabled:opacity-50 cursor-pointer"
-                                    >
-                                        ✓ Aceptar
-                                    </button>
-                                    <button
-                                        onClick={() =>
-                                            handleReject(service.id, app.id)
-                                        }
-                                        disabled={processing === app.id}
-                                        className="px-3 py-1.5 bg-red-500/20 text-red-400 hover:bg-red-500/30 rounded-lg text-xs font-medium transition-colors disabled:opacity-50 cursor-pointer"
-                                    >
-                                        ✕ Rechazar
-                                    </button>
+                                <div className="flex items-center gap-4 flex-shrink-0">
+                                    {/* Costo estimado */}
+                                    <div className="text-right mr-2">
+                                        <p className="text-xs text-muted">Costo Estimado</p>
+                                        {app.costComplete ? (
+                                            <p className="text-sm font-bold font-mono text-green-400">
+                                                ${app.estimatedCost.toLocaleString("es-MX", {
+                                                    minimumFractionDigits: 2,
+                                                })}
+                                            </p>
+                                        ) : (
+                                            <p className="text-xs text-yellow-400">
+                                                ⚠️ Precio incompleto
+                                            </p>
+                                        )}
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={() =>
+                                                handleAccept(service.id, app)
+                                            }
+                                            disabled={processing === app.id}
+                                            className="px-3 py-1.5 bg-green-500/20 text-green-400 hover:bg-green-500/30 rounded-lg text-xs font-medium transition-colors disabled:opacity-50 cursor-pointer"
+                                        >
+                                            ✓ Aceptar
+                                        </button>
+                                        <button
+                                            onClick={() =>
+                                                handleReject(service.id, app.id)
+                                            }
+                                            disabled={processing === app.id}
+                                            className="px-3 py-1.5 bg-red-500/20 text-red-400 hover:bg-red-500/30 rounded-lg text-xs font-medium transition-colors disabled:opacity-50 cursor-pointer"
+                                        >
+                                            ✕ Rechazar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         ))}

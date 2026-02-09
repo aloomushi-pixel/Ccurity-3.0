@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { getServicesByStateName } from "@/lib/data/services";
+import { getServicesByStateName, calculateServiceCostForCollaborator } from "@/lib/data/services";
 import { getApplicationsByCollaborator } from "@/lib/data/service-applications";
 import { ServiciosClient } from "./ServiciosClient";
 
@@ -19,6 +19,34 @@ export default async function ColaboradorServiciosPage() {
     // Filter out services the collaborator already applied to
     const appliedServiceIds = new Set(myApplications.map((a) => a.serviceId));
 
+    // Calculate cost for each service using collaborator's prices
+    const servicesWithCost = await Promise.all(
+        availableServices.map(async (s) => {
+            let estimatedCost = 0;
+            let costComplete = true;
+            try {
+                const cost = await calculateServiceCostForCollaborator(s.id, user.id);
+                estimatedCost = cost.total;
+                costComplete = cost.complete;
+            } catch {
+                costComplete = false;
+            }
+
+            return {
+                id: s.id,
+                description: s.description || s.title || "",
+                scheduledDate: s.scheduledDate,
+                address: s.address,
+                clientName: s.client?.name || "—",
+                typeName: s.serviceType?.name || "—",
+                typeColor: s.serviceType?.color || "#666",
+                alreadyApplied: appliedServiceIds.has(s.id),
+                estimatedCost,
+                costComplete,
+            };
+        })
+    );
+
     return (
         <div className="min-h-screen bg-background text-foreground">
             <header className="sticky top-0 z-30 bg-surface/80 backdrop-blur-xl border-b border-border">
@@ -31,23 +59,15 @@ export default async function ColaboradorServiciosPage() {
                     </a>
                     <h1 className="text-xl font-bold mt-1">🔧 Servicios Disponibles</h1>
                     <p className="text-sm text-muted mt-0.5">
-                        Postúlate a los servicios disponibles o revisa tus postulaciones
+                        Postúlate a los servicios disponibles o revisa tus postulaciones.
+                        Los costos se calculan con tus precios personalizados.
                     </p>
                 </div>
             </header>
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
                 <ServiciosClient
-                    availableServices={availableServices.map((s) => ({
-                        id: s.id,
-                        description: s.description || s.title || "",
-                        scheduledDate: s.scheduledDate,
-                        address: s.address,
-                        clientName: s.client?.name || "—",
-                        typeName: s.serviceType?.name || "—",
-                        typeColor: s.serviceType?.color || "#666",
-                        alreadyApplied: appliedServiceIds.has(s.id),
-                    }))}
+                    availableServices={servicesWithCost}
                     myApplications={myApplications.map((a) => ({
                         id: a.id,
                         serviceId: a.serviceId,
@@ -60,3 +80,4 @@ export default async function ColaboradorServiciosPage() {
         </div>
     );
 }
+

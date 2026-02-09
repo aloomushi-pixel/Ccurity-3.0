@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { UserNav } from "@/components/user-nav";
 import { getServiceById, getServiceStates, getCollaborators } from "@/lib/data/services";
-import { updateServiceStateAction, assignCollaboratorAction } from "../actions";
+import { updateServiceStateAction, assignCollaboratorAction, completeLevantamientoAction } from "../actions";
 
 export default async function ServiceDetailPage({
     params,
@@ -144,6 +144,30 @@ export default async function ServiceDetailPage({
                     </div>
                 </div>
 
+                {/* Completar Levantamiento Button */}
+                {service.serviceState?.name === "Levantamiento" && (
+                    <div className="glass-card p-5 border-l-4 border-l-accent">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h3 className="text-sm font-semibold mb-1">📋 Levantamiento en Progreso</h3>
+                                <p className="text-xs text-muted">
+                                    Al completar, se generarán los conceptos a partir de la plantilla del tipo de servicio
+                                    y el servicio se abrirá para postulación.
+                                </p>
+                            </div>
+                            <form>
+                                <input type="hidden" name="id" value={service.id} />
+                                <button
+                                    formAction={completeLevantamientoAction}
+                                    className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-accent to-primary text-white text-sm font-medium hover:opacity-90 transition-opacity cursor-pointer whitespace-nowrap"
+                                >
+                                    ✅ Completar Levantamiento
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                )}
+
                 {/* State transition */}
                 {states.length > 0 && (
                     <div className="glass-card p-5">
@@ -159,8 +183,8 @@ export default async function ServiceDetailPage({
                                             formAction={updateServiceStateAction}
                                             disabled={isActive}
                                             className={`px-4 py-2 rounded-lg text-xs font-medium border transition-all cursor-pointer ${isActive
-                                                    ? "opacity-100 ring-2 ring-offset-2 ring-offset-background"
-                                                    : "opacity-60 hover:opacity-100"
+                                                ? "opacity-100 ring-2 ring-offset-2 ring-offset-background"
+                                                : "opacity-60 hover:opacity-100"
                                                 }`}
                                             style={{
                                                 backgroundColor: `${st.color}20`,

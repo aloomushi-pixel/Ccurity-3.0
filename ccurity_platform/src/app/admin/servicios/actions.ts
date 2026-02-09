@@ -116,3 +116,17 @@ export async function deleteServiceStateAction(formData: FormData) {
     if (error) throw error;
     revalidatePath("/admin/servicios/tipos");
 }
+
+/* ── Levantamiento Workflow ────── */
+
+export async function completeLevantamientoAction(formData: FormData) {
+    const { completeAndOpenForBidding } = await import("@/lib/data/services");
+    const id = formData.get("id") as string;
+
+    if (!id) throw new Error("ID de servicio requerido");
+
+    await completeAndOpenForBidding(id);
+    revalidatePath("/admin/servicios");
+    revalidatePath(`/admin/servicios/${id}`);
+    revalidatePath("/colaborador/servicios");
+}

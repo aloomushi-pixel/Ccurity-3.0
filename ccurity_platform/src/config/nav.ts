@@ -11,6 +11,7 @@ import {
     Calendar,
     HelpCircle,
     FileCheck,
+    Mail,
 } from "lucide-react";
 
 export type NavItem = {
@@ -28,6 +29,7 @@ export const navConfig = {
         { title: "Cotizaciones", href: "/admin/cotizaciones", icon: FileText },
         { title: "Finanzas", href: "/admin/finanzas", icon: CreditCard },
         { title: "Chat", href: "/admin/chat", icon: MessageSquare },
+        { title: "Correo", href: "/admin/correo", icon: Mail },
         { title: "Reportes", href: "/admin/reportes", icon: BarChart3 },
         { title: "Configuración", href: "/admin/config", icon: Settings },
     ],

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { UserNav } from "@/components/user-nav";
-import { getServicesByStateName } from "@/lib/data/services";
+import { getServicesByStateName, calculateServiceCostForCollaborator } from "@/lib/data/services";
 import { getApplicationsByService } from "@/lib/data/service-applications";
 import { AdminPostulacionesClient } from "./AdminPostulacionesClient";
 
@@ -10,6 +10,37 @@ export default async function AdminPostulacionesPage() {
     const servicesWithApplications = await Promise.all(
         postulandoServices.map(async (service) => {
             const applications = await getApplicationsByService(service.id);
+            const pendingApps = applications.filter((a) => a.status === "pending");
+
+            // Calcular costo estimado para cada postulante
+            const appsWithCost = await Promise.all(
+                pendingApps.map(async (a) => {
+                    let estimatedCost = 0;
+                    let costComplete = true;
+                    try {
+                        const cost = await calculateServiceCostForCollaborator(
+                            service.id,
+                            a.collaboratorId
+                        );
+                        estimatedCost = cost.total;
+                        costComplete = cost.complete;
+                    } catch {
+                        costComplete = false;
+                    }
+
+                    return {
+                        id: a.id,
+                        collaboratorId: a.collaboratorId,
+                        collaboratorName: a.collaboratorName || "—",
+                        collaboratorEmail: a.collaboratorEmail || "",
+                        message: a.message,
+                        createdAt: a.createdAt,
+                        estimatedCost,
+                        costComplete,
+                    };
+                })
+            );
+
             return {
                 id: service.id,
                 description: service.description || service.title || "",
@@ -17,16 +48,7 @@ export default async function AdminPostulacionesPage() {
                 typeName: service.serviceType?.name || "—",
                 typeColor: service.serviceType?.color || "#666",
                 scheduledDate: service.scheduledDate,
-                applications: applications
-                    .filter((a) => a.status === "pending")
-                    .map((a) => ({
-                        id: a.id,
-                        collaboratorId: a.collaboratorId,
-                        collaboratorName: a.collaboratorName || "—",
-                        collaboratorEmail: a.collaboratorEmail || "",
-                        message: a.message,
-                        createdAt: a.createdAt,
-                    })),
+                applications: appsWithCost,
             };
         })
     );
@@ -52,10 +74,12 @@ export default async function AdminPostulacionesPage() {
 
             <main className="max-w-7xl mx-auto px-6 py-8">
                 <p className="text-muted mb-6">
-                    Revisa y asigna colaboradores a los servicios disponibles.
+                    Revisa y asigna colaboradores a los servicios disponibles. El costo estimado se calcula
+                    con los precios personalizados de cada colaborador.
                 </p>
                 <AdminPostulacionesClient services={servicesWithApplications} />
             </main>
         </div>
     );
 }
+

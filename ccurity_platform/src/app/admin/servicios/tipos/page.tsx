@@ -33,7 +33,15 @@ export default async function ServiceTypesPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Service Types */}
                     <section className="space-y-4">
-                        <h2 className="text-lg font-semibold">🏷️ Tipos de Servicio</h2>
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-lg font-semibold">🏷️ Tipos de Servicio</h2>
+                            <Link
+                                href="/admin/servicios/tipos/plantillas"
+                                className="text-xs text-primary-light hover:underline"
+                            >
+                                📋 Plantillas de Levantamiento →
+                            </Link>
+                        </div>
 
                         <form action={createServiceTypeAction} className="glass-card p-4 space-y-3">
                             <div className="grid grid-cols-3 gap-3">
@@ -84,16 +92,25 @@ export default async function ServiceTypesPage() {
                                             )}
                                         </div>
                                     </div>
-                                    <form className="inline">
-                                        <input type="hidden" name="id" value={t.id} />
-                                        <button
-                                            formAction={deleteServiceTypeAction}
-                                            className="text-xs text-muted hover:text-red-400 transition-colors cursor-pointer"
-                                            title="Eliminar"
+                                    <div className="flex items-center gap-2">
+                                        <Link
+                                            href={`/admin/servicios/tipos/plantillas?tipo=${t.id}`}
+                                            className="text-xs text-muted hover:text-primary-light transition-colors"
+                                            title="Configurar plantilla"
                                         >
-                                            🗑️
-                                        </button>
-                                    </form>
+                                            📋
+                                        </Link>
+                                        <form className="inline">
+                                            <input type="hidden" name="id" value={t.id} />
+                                            <button
+                                                formAction={deleteServiceTypeAction}
+                                                className="text-xs text-muted hover:text-red-400 transition-colors cursor-pointer"
+                                                title="Eliminar"
+                                            >
+                                                🗑️
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             ))}
                             {types.length === 0 && (
