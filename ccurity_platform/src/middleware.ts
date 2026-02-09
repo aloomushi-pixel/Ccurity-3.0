@@ -13,7 +13,8 @@ export const config = {
          * - _next/image (image optimization)
          * - favicon.ico
          * - public folder files (svg, png, jpg, json, js, etc.)
+         * - /api/ routes (except specific webhooks if needed, but generally exclude all API for role-based redirect)
          */
-        "/((?!_next/static|_next/image|favicon.ico|api/webhooks/.*|.*\\.(?:svg|png|jpg|jpeg|gif|webp|json|js)$).*)",
+        "/((?!_next/static|_next/image|favicon.ico|api/|api/webhooks/.*|.*\\.(?:svg|png|jpg|jpeg|gif|webp|json|js)$).*)",
     ],
 };
