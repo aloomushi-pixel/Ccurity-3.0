@@ -145,7 +145,7 @@ export default async function ServiceDetailPage({
                 </div>
 
                 {/* Completar Levantamiento Button */}
-                {service.serviceState?.name === "Levantamiento" && (
+                {service.serviceState?.name === "En Levantamiento" && (
                     <div className="glass-card p-5 border-l-4 border-l-accent">
                         <div className="flex items-center justify-between">
                             <div>
